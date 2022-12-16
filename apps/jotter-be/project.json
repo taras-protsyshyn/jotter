@@ -1,0 +1,52 @@
+{
+  "root": "apps/jotter-be",
+  "sourceRoot": "apps/jotter-be/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/jotter-be",
+        "main": "apps/jotter-be/src/main.ts",
+        "tsConfig": "apps/jotter-be/tsconfig.app.json",
+        "assets": ["apps/jotter-be/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/jotter-be/src/environments/environment.ts",
+              "with": "apps/jotter-be/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "jotter-be:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/jotter-be/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/jotter-be"],
+      "options": {
+        "jestConfig": "apps/jotter-be/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

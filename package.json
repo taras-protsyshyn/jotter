@@ -1,0 +1,21 @@
+{
+  "name": "jotter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:taras-protsyshyn/jotter.git",
+  "author": "taras-protsyshyn <protsyshyn.t@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:server": "yarn workspace server dev",
+    "dev:client": "yarn workspace client dev",
+    "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

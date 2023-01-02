@@ -1,3 +1,5 @@
+import { UserRegisterDto } from "./dto/user-register.dto";
+import { UserLoginDto } from "./dto/user-login.tdo";
 import { inject, injectable } from "inversify";
 import { Response, Request, NextFunction } from "express";
 
@@ -8,6 +10,7 @@ import { BaseController } from "../common/base.controller";
 import { IUsers } from "./users.interface";
 
 import "reflect-metadata";
+import { User } from "./user.entity";
 
 @injectable()
 export class UserController extends BaseController implements IUsers {
@@ -20,11 +23,16 @@ export class UserController extends BaseController implements IUsers {
     ]);
   }
 
-  login(req: Request, res: Response, next: NextFunction) {
+  login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction) {
+    console.log(req.body);
+
     next(new HttpError(401, "Not authorized", "User"));
   }
 
-  register(req: Request, res: Response, next: NextFunction) {
-    this.ok(res, "register");
+  async register(req: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction) {
+    const user = new User(req.body.email, req.body.name);
+    await user.setPassword(req.body.password);
+
+    this.ok(res, user);
   }
 }

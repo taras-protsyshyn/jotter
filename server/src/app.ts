@@ -9,6 +9,7 @@ import express, { Express } from "express";
 
 import "reflect-metadata";
 import { IUsers } from "./users/users.interface";
+import { json } from "body-parser";
 
 @injectable()
 export class App {
@@ -34,7 +35,12 @@ export class App {
     this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter));
   }
 
+  useBodyParser() {
+    this.app.use(json());
+  }
+
   async init() {
+    this.useBodyParser();
     this.useRoutes();
     this.useExceptionFilters();
     this.server = this.app.listen(this.port);

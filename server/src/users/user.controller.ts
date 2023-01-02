@@ -1,3 +1,4 @@
+import { HttpError } from "./../errors/http-errors.class";
 import { Response, Request, NextFunction } from "express";
 import { BaseController } from "../common/base.controller";
 import { LoggerService } from "../logger/logger.service";
@@ -13,7 +14,7 @@ export class UserController extends BaseController {
   }
 
   login(req: Request, res: Response, next: NextFunction) {
-    this.ok(res, "logged");
+    next(new HttpError(401, "Not authorized", "User"));
   }
 
   register(req: Request, res: Response, next: NextFunction) {

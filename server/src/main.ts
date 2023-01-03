@@ -1,3 +1,4 @@
+import { IUserService } from "./users/user.service.interface";
 import { IExceptionFilter } from "./errors/exception.filter.interface";
 import { TYPES } from "./types";
 import { Container, ContainerModule, interfaces } from "inversify";
@@ -8,12 +9,15 @@ import { ILogger } from "./logger/logger.interface";
 import { LoggerService } from "./logger/logger.service";
 import { UserController } from "./users/users.controller";
 import { IUsers } from "./users/users.interface";
+import { UserService } from "./users/user.service";
 
 export const appBinding = new ContainerModule((bind: interfaces.Bind) => {
   bind<ILogger>(TYPES.ILogger).to(LoggerService);
   bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter);
-  bind<IUsers>(TYPES.IUsers).to(UserController);
   bind<App>(TYPES.App).to(App);
+
+  bind<IUsers>(TYPES.IUsers).to(UserController);
+  bind<IUserService>(TYPES.UsersService).to(UserService);
 });
 
 async function bootstrap() {

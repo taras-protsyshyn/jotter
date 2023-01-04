@@ -1,3 +1,4 @@
+import { IConfigService } from "./config/config.service.interface";
 import { IUserService } from "./users/user.service.interface";
 import { IExceptionFilter } from "./errors/exception.filter.interface";
 import { TYPES } from "./types";
@@ -10,14 +11,16 @@ import { LoggerService } from "./logger/logger.service";
 import { UserController } from "./users/users.controller";
 import { IUsers } from "./users/users.interface";
 import { UserService } from "./users/user.service";
+import { ConfigService } from "./config/config.service";
 
 export const appBinding = new ContainerModule((bind: interfaces.Bind) => {
-  bind<ILogger>(TYPES.ILogger).to(LoggerService);
-  bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter);
-  bind<App>(TYPES.App).to(App);
+  bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
+  bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
+  bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter).inSingletonScope();
+  bind<IUsers>(TYPES.IUsers).to(UserController).inSingletonScope();
+  bind<IUserService>(TYPES.UsersService).to(UserService).inSingletonScope();
 
-  bind<IUsers>(TYPES.IUsers).to(UserController);
-  bind<IUserService>(TYPES.UsersService).to(UserService);
+  bind<App>(TYPES.App).to(App).inSingletonScope();
 });
 
 async function bootstrap() {

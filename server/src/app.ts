@@ -1,3 +1,5 @@
+import { IConfigService } from "./config/config.service.interface";
+import { ConfigService } from "./config/config.service";
 import { TYPES } from "./types";
 import { IExceptionFilter } from "./errors/exception.filter.interface";
 import { ILogger } from "./logger/logger.interface";
@@ -20,7 +22,8 @@ export class App {
   constructor(
     @inject(TYPES.ILogger) private logger: ILogger,
     @inject(TYPES.IUsers) private userController: IUsers,
-    @inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter
+    @inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
+    @inject(TYPES.ConfigService) private configService: IConfigService
   ) {
     this.server = null;
     this.port = 8000;

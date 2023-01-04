@@ -18,7 +18,8 @@
     "inversify": "^6.0.1",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
-    "tslog": "^4.7.1"
+    "tslog": "^4.7.1",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

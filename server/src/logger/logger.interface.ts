@@ -1,8 +1,9 @@
+import { LeveledLogMethod, Logger } from "winston";
+
 export interface ILogger {
-  logger: unknown;
-  log(...args: unknown[]): void;
+  logger: Logger;
 
-  warn(...args: unknown[]): void;
-
-  error(...args: unknown[]): void;
+  info(message: string): void;
+  warn(message: string): void;
+  error(message: string): void;
 }

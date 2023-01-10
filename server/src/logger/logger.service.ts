@@ -1,26 +1,35 @@
 import { ILogger } from "./logger.interface";
-import { Logger } from "tslog";
+import winston, { Logger } from "winston";
 import { injectable } from "inversify";
 
 import "reflect-metadata";
 
 @injectable()
-export class LoggerService<LogObj = unknown> implements ILogger {
-  logger: Logger<LogObj>;
+export class LoggerService implements ILogger {
+  logger: Logger;
 
   constructor() {
-    this.logger = new Logger<LogObj>({ hideLogPositionForProduction: true });
+    const myFormat = winston.format.printf(({ level, message, timestamp }) => {
+      return `${timestamp} > ${level}: ${message}`;
+    });
+
+    this.logger = winston.createLogger({
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.colorize(),
+        myFormat
+      ),
+      transports: [new winston.transports.Console()],
+    });
   }
 
-  log(...args: unknown[]) {
-    this.logger.info(...args);
+  info(message: string) {
+    this.logger.info(message);
   }
-
-  warn(...args: unknown[]) {
-    this.logger.warn(...args);
+  warn(message: string) {
+    this.logger.warn(message);
   }
-
-  error(...args: unknown[]) {
-    this.logger.error(...args);
+  error(message: string) {
+    this.logger.error(message);
   }
 }

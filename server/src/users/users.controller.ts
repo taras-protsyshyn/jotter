@@ -27,7 +27,7 @@ export class UserController extends BaseController implements IUsers {
         path: "/register",
         method: "post",
         func: this.register,
-        middleware: [new ValidateMiddleware(UserRegisterDto)],
+        middleware: [new ValidateMiddleware(UserRegisterDto, loggerService)],
       },
       { path: "/login", method: "post", func: this.login },
     ]);
@@ -45,6 +45,7 @@ export class UserController extends BaseController implements IUsers {
     if (!newUser) {
       return next(new HttpError(422, "User already exist"));
     }
+
     this.ok(res, newUser);
   }
 }

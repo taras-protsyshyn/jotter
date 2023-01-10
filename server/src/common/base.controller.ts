@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { ILogger } from "./../logger/logger.interface";
-import { Router, Response } from "express";
+import { Router, Response, Request, NextFunction } from "express";
 
 import { IControllerRoute } from "./route.interface";
 
@@ -28,13 +28,20 @@ export abstract class BaseController {
     return this.send<T>(res, 200, message);
   }
 
+  useLogger(req: Request, res: Response, next: NextFunction) {
+    this.logger.info(`[${req.method.toUpperCase()}] ${req.path}`);
+
+    next();
+  }
+
   protected bindRoutes(routes: IControllerRoute[]) {
     for (const route of routes) {
-      this.logger.log(`[${route.method}] [${route.path}]`);
-      const middleware = route.middleware?.map((m) => m.execute.bind(m));
+      this.logger.info(`[${route.method.toUpperCase()}] ${route.path} > was successfully setup`);
+      const middleware = route.middleware?.map((m) => m.execute.bind(m)) || [];
 
       const handler = route.func.bind(this);
-      const pipeline = middleware ? [...middleware, handler] : handler;
+      const pipeline = [...middleware, this.useLogger.bind(this), handler];
+
       this.router[route.method](route.path, pipeline);
     }
   }

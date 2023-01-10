@@ -1,6 +1,3 @@
-import { LoggerService } from "./../logger/logger.service";
-import { ExceptionFilter } from "./exception.filter";
-
 export class HttpError extends Error {
   statusCode: number;
   context?: string;

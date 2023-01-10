@@ -1,5 +1,5 @@
 import { ILogger } from "./../logger/logger.interface";
-import { Logger } from "tslog";
+
 import { TYPES } from "./../types";
 import { IConfigService } from "./config.service.interface";
 
@@ -16,7 +16,7 @@ export class ConfigService implements IConfigService {
     if (result.error) {
       this.logger.error(`[ConfigService] failed > ${result.error.message}`);
     } else {
-      this.logger.log(`[ConfigService] > dotenv successfully loaded`);
+      this.logger.info(`[ConfigService] > dotenv successfully loaded`);
       this.config = result.parsed as DotenvParseOutput;
     }
   }
